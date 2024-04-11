@@ -1,25 +1,39 @@
-# Internship assignment template
-This is the template that can be used to create the internship assignment. It is based on a DDEV environment and the use of the Symfony framework.
+# Recranet assignment solution
+This repository contains a solution (Symfony application) for the programming assignment provided by [Recranet](https://recranet.com/en/).
+# Getting started
+## Prerequisites
+This project is based on a [DDEV](https://ddev.readthedocs.io/en/stable/#__tabbed_1_1) environment. In order to install it, [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) with [Ubuntu](https://ubuntu.com/) (or any other) distribution or native Linux as well as [Docker Desktop](https://www.docker.com/products/docker-desktop/) should be integrated in your system.
+## Setting up
+__After__ all the necessary software was installed and configured, following instructions can be executed:
+1. Clone the repo on your local environment (preferably on WSL2)
+2. Open the project in the IDE of choice (e.g. PHPStorm)
+3. Execute `ddev start` in the terminal and wait until the server starts
+4. Run `ddev ssh`
+5. Run `composer install` to install all the necessary dependencies for Symfony
 
-## Usage
-This is a template for the application development for the internship assignment. This environment is set up with [DDEV]([https://ddev.readthedocs.io/en/stable/](https://ddev.com/get-started/)). Install this software to make use of this development environment.
+To stop the server, execute `ddev stop`.
+## Possible difficulties
+If you try to install DDEV using WSL2, Ubuntu and Docker Desktop, you might encounter some errors that could be described in this section.
+### __`root` User__  
+After executing [this](https://raw.githubusercontent.com/ddev/ddev/master/scripts/install_ddev_wsl2_docker_desktop.ps1) script (number 6 in DDEV [instructions](https://ddev.readthedocs.io/en/stable/users/install/ddev-installation/#wsl2-docker-desktop-install-script)), you may get the following error:
+> The default user in your distro seems to be root. Please configure an ordinary default user
+    
+This happens, because you are trying to download DDEV with the `root` user, which is not permitted by this software. To fix this issue, create a new user in Ubuntu terminal and then set it as a default in `Ubuntu/etc/wsl.conf` file with:
+```php
+[user]
+default=<your-username>
+```
+Relaunch Ubuntu and run the script again, everything should work as expected.
 
-Create a new personal repository based on this template
+### __Permissions__  
+When you open the project in PHPStorm (or any other IDE) and try to run `ddev start`, you might get permission errors similar to these:
+> populateExamplesAndCommands() failed: mkdir /home/recranet-assignment-solution/.ddev/commands: permission denied  
+> Adding custom/shell commands failed: mkdir /home/recranet-assignment-solution/.ddev/.global_commands: permission denied
+    
+This happens, because you do not have rights to modify (mkdir in this case) the folder of the project. To fix this, grant these permissions using a couple of commands:  
+1. `sudo chown -R <your-username>: recranet-assignment-solution`  
+Gives you the ownership of the project folder and all of its subfolders
+2. `sudo chmod -R u+w recranet-assignment-solution`  
+Gives you the permission to modify the folder and its subfolders
 
-![Screenshot 2024-04-09 at 10 34 28](https://github.com/recranet/internship-assignment-template/assets/36085765/90d8b4a0-8d2e-43c2-8677-3158270ee716)
-
-Once you have cloned this repository on your computer, you can use the following commands:
-
-`ddev start` This command starts the local development environment.
-
-`ddev stop` This command stops the local development environment.
-
-To develop in the application, you can use the `ddev ssh` command. This opens a terminal session in the virtual development environment. Here you can run the `composer install` command to install the dependencies and use other symfony commands.
-
-When everything is correctly set up, you will see this homepage at the URL that appears in your terminal after you have used `ddev start`.
-
-   ![Screenshot 2024-04-09 at 10 43 57](https://github.com/recranet/internship-assignment-template/assets/36085765/1973e08f-af3e-4999-925f-5dc1c9546b78)
-
-A basic PHP Symfony project has already been set up in this repository. For more information, read the documentation for the development environment in [DDEV](https://ddev.readthedocs.io/en/stable/) or the PHP framework [Symfony](https://symfony.com/doc/current/index.html).
-
-If you encounter any problems while setting up the development environment, please do not hesitate to contact us!
+After that, `ddev start` should work perfectly.
