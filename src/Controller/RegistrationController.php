@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Security\EmailVerifier;
+use App\Security\LogInFormAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
@@ -23,7 +25,7 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, UserAuthenticatorInterface $userAuthenticator, LogInFormAuthenticator $logInFormAuthenticator): Response
     {
         // if already authenticated, redirect home
         if ($this->isGranted('ROLE_USER')) {
@@ -47,15 +49,19 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
 
             // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
-              (new TemplatedEmail())
-                ->from(new Address('eredivisie@football.com', 'Eredivisie Mail Bot'))
-                ->to($user->getEmail())
-                ->subject('Please Confirm your Email')
-                ->htmlTemplate('auth/confirmation_email.html.twig')
-            );
+//            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+//              (new TemplatedEmail())
+//                ->from(new Address('eredivisie@football.com', 'Eredivisie Mail Bot'))
+//                ->to($user->getEmail())
+//                ->subject('Please Confirm your Email')
+//                ->htmlTemplate('auth/confirmation_email.html.twig')
+//            );
 
-            return $this->redirectToRoute('app_home');
+            return $userAuthenticator->authenticateUser(
+                $user,
+                $logInFormAuthenticator,
+                $request
+            );
         }
 
         return $this->render('auth/register.html.twig', [
