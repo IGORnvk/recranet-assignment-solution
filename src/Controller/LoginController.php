@@ -31,8 +31,10 @@ class LoginController extends AbstractController
     }
 
     #[Route(path: '/logout', name: 'app_logout')]
-    public function logout(): void
+    public function logout(Security $security): Response
     {
-        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+        $security->logout(false);
+
+        return $this->redirectToRoute('app_login');
     }
 }

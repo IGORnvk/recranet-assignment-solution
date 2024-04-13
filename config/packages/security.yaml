@@ -18,18 +18,6 @@ security:
         main:
             lazy: true
             provider: app_user_provider
-#            form_login:
-#                login_path: app_login
-#                check_path: app_login
-#                username_parameter: log_in_form[email]
-#                password_parameter: log_in_form[password]
-#                always_use_default_target_path: true
-#                default_target_path: app_home
-#                enable_csrf: true
-            logout:
-                path: app_logout
-                # where to redirect after logout
-                target: app_login
             remember_me:
                 secret: '%kernel.secret%'
                 lifetime: 604800
