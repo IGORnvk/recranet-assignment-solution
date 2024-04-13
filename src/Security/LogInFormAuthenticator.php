@@ -33,8 +33,9 @@ class LogInFormAuthenticator extends AbstractLoginFormAuthenticator
 
     public function authenticate(Request $request): Passport
     {
-        $email = $request->request->get('log_in_form[email]');
-        $password = $request->request->get('log_in_form[password]');
+        $form = $request->request->all('log_in_form');
+        $email = $form['email'];
+        $password = $form['password'];
 
         return new Passport(
             new UserBadge($email, function($userIdentifier) {
@@ -61,8 +62,9 @@ class LogInFormAuthenticator extends AbstractLoginFormAuthenticator
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
         // redirect to previous url, if any
-        if ($target == $this->getTargetPath($request->getSession(), $firewallName)) {
-            return new RedirectResponse($target);
+        $targetPath = $this->getTargetPath($request->getSession(), $firewallName);
+        if ($targetPath) {
+            return new RedirectResponse($targetPath);
         }
 
         // otherwise redirect to home
