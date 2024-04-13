@@ -47,16 +47,14 @@ class RegistrationController extends AbstractController
                     ->from(new Address('eredivisie@football.com', 'Eredivisie Mail Bot'))
                     ->to($user->getEmail())
                     ->subject('Please Confirm your Email')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
+                    ->htmlTemplate('auth/confirmation_email.html.twig')
             );
-
-            // do anything else you need here, like send an email
 
             return $this->redirectToRoute('app_home');
         }
 
-        return $this->render('registration/register.html.twig', [
-            'registrationForm' => $form,
+        return $this->render('auth/register.html.twig', [
+            'form' => $form,
         ]);
     }
 

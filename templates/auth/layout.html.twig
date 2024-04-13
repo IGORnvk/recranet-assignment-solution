@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% for flash_error in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+
+    <div class="flex h-screen">
+        <div class="m-auto border border-2 border-gray-300 rounded-lg shadow-lg flex flex-col items-center justify-center px-6 pb-6">
+            {% block form %}{% endblock %}
+        </div>
+    </div>
+{% endblock %}

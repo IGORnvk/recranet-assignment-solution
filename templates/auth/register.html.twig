@@ -1,0 +1,32 @@
+{% extends 'auth/layout.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block form %}
+    <p class="text-2xl my-4">Register</p>
+
+    {{ form_errors(form) }}
+
+    {{ form_start(form) }}
+    {{ form_row(form.name, {
+        widget_class: 'text-black rounded-md bg-gray-200'
+    }) }}
+    {{ form_row(form.email, {
+        widget_class: 'text-black rounded-md bg-gray-200'
+    }) }}
+    {{ form_row(form.plainPassword, {
+        label: 'Password',
+        widget_class: 'text-black rounded-md bg-gray-200'
+    }) }}
+    {{ form_row(form.agreeTerms, {
+        label: 'Terms and conditions',
+        row_class: 'flex flex-row gap-1'
+    }) }}
+
+    <button type="submit" class="bg-sky-600 hover:bg-sky-700 py-2 px-4 mt-4 text-white rounded-lg">Register</button>
+    {{ form_end(form) }}
+
+    <div class="mt-4">
+        <p>Have an account? <a class="underline" href="{{ path('app_login') }}">Sign in</a></p>
+    </div>
+{% endblock %}
