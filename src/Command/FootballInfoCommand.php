@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
-    name: 'FootballInfoCommand',
+    name: 'football-info',
     description: 'Retrieves information about Eredivisie matches',
 )]
 class FootballInfoCommand extends Command
