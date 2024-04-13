@@ -1,8 +1,6 @@
 twig:
     file_name_pattern: '*.twig'
     form_themes: ['tailwind_2_layout.html.twig']
-    globals:
-        fos_csrf_provider: "@security.csrf.token_manager"
 
 when@test:
     twig:

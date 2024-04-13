@@ -8,24 +8,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class LoginController extends AbstractController
 {
     #[Route(path: '/login', name: 'app_login')]
-    public function login(Request $request): Response
+    public function login(Request $request, AuthenticationUtils $authenticationUtils): Response
     {
-        // check if the user is already authenticated and if so, redirect him to the home page
-        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
-            $this->addFlash('warning', 'You are already logged in');
-            return $this->redirectToRoute('app_home');
-        }
 
         // create form for logging in
         $form = $this->createForm(LogInFormType::class);
         $form->handleRequest($request);
 
         return $this->render('auth/login.html.twig', [
-          'form' => $form,
+            'form' => $form,
+            'error' => $authenticationUtils->getLastAuthenticationError()
         ]);
     }
 
