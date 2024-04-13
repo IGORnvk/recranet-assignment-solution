@@ -21,8 +21,8 @@ security:
                 check_path: app_login
                 username_parameter: log_in_form[email]
                 password_parameter: log_in_form[password]
-#                always_use_default_target_path: true
-#                default_target_path: app_home
+                always_use_default_target_path: true
+                default_target_path: app_home
                 enable_csrf: true
             logout:
                 path: app_logout
@@ -42,6 +42,7 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
+        - { path: ^/home, roles: IS_AUTHENTICATED_FULLY }
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 

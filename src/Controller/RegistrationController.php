@@ -32,10 +32,10 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
             $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
-                )
+              $userPasswordHasher->hashPassword(
+                $user,
+                $form->get('plainPassword')->getData()
+              )
             );
 
             $entityManager->persist($user);
@@ -43,18 +43,18 @@ class RegistrationController extends AbstractController
 
             // generate a signed url and email it to the user
             $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
-                (new TemplatedEmail())
-                    ->from(new Address('eredivisie@football.com', 'Eredivisie Mail Bot'))
-                    ->to($user->getEmail())
-                    ->subject('Please Confirm your Email')
-                    ->htmlTemplate('auth/confirmation_email.html.twig')
+              (new TemplatedEmail())
+                ->from(new Address('eredivisie@football.com', 'Eredivisie Mail Bot'))
+                ->to($user->getEmail())
+                ->subject('Please Confirm your Email')
+                ->htmlTemplate('auth/confirmation_email.html.twig')
             );
 
             return $this->redirectToRoute('app_home');
         }
 
         return $this->render('auth/register.html.twig', [
-            'form' => $form,
+          'form' => $form,
         ]);
     }
 

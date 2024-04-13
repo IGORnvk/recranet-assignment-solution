@@ -14,6 +14,12 @@ class LoginController extends AbstractController
     #[Route(path: '/login', name: 'app_login')]
     public function login(Request $request): Response
     {
+        // check if the user is already authenticated and if so, redirect him to the home page
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            $this->addFlash('warning', 'You are already logged in');
+            return $this->redirectToRoute('app_home');
+        }
+
         // create form for logging in
         $form = $this->createForm(LogInFormType::class);
         $form->handleRequest($request);
