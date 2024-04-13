@@ -5,11 +5,13 @@ This repository contains a solution (Symfony application) for the programming as
 This project is based on a [DDEV](https://ddev.readthedocs.io/en/stable/#__tabbed_1_1) environment. In order to install it, [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) with [Ubuntu](https://ubuntu.com/) (or any other) distribution or native Linux as well as [Docker Desktop](https://www.docker.com/products/docker-desktop/) should be integrated in your system. Additionally, [Composer](https://getcomposer.org/) must be installed for the dependency management.
 ## Setting up
 __After__ all the necessary software was installed and configured, following instructions can be executed:
-1. Clone the repo on your local environment (preferably on WSL2)
+1. Clone the repo on your local environment (on WSL2)
 2. Open the project in the IDE of choice (e.g. PHPStorm)
 3. Execute `ddev start` in the terminal and wait until the server starts
 4. Run `ddev ssh`
 5. Run `composer install` to install all the necessary dependencies for Symfony
+6. Run `npm install` to install Tailwind and other dependencies
+7. Run `npm run watch` to track CSS changes
 
 To stop the server, execute `ddev stop`.
 ## Possible difficulties
