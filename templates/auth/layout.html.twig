@@ -4,6 +4,10 @@
     <div class="flex h-screen">
         <div class="m-auto border border-2 border-gray-300 rounded-lg shadow-lg flex flex-col items-center justify-center px-6 pb-6">
             {% block form %}{% endblock %}
+
+            <div class="mt-4">
+                {% block link %}{% endblock %}
+            </div>
         </div>
     </div>
 {% endblock %}
