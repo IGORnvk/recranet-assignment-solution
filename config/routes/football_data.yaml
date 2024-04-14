@@ -1,0 +1,7 @@
+matches:
+    path: 'v4/competitions/{league}/matches'
+    methods: [GET]
+
+standings:
+    path: 'v4/competitions/{league}/standings'
+    methods: [GET]

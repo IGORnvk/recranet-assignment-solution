@@ -9,6 +9,15 @@ framework:
     #esi: true
     #fragments: true
 
+    http_client:
+        default_options:
+            max_redirects: 7
+        scoped_clients:
+            football_data.client:
+                base_uri: '%env(FOOTBALL_DATA_BASE_URL)%'
+                headers:
+                    'X-Auth-Token': '%env(FOOTBALL_DATA_API_TOKEN)%'
+
 when@test:
     framework:
         test: true

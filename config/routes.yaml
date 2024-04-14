@@ -3,3 +3,7 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+football_data_api:
+    resource: 'routes/football_data.yaml'
+    name_prefix: 'football_data_'
