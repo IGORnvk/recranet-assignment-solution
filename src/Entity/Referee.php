@@ -24,7 +24,7 @@ class Referee
     /**
      * @var Collection<int, Game>
      */
-    #[ORM\OneToMany(targetEntity: Game::class, mappedBy: 'referee_id', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Game::class, mappedBy: 'referee', orphanRemoval: true)]
     private Collection $games;
 
     public function __construct()
@@ -73,7 +73,7 @@ class Referee
     {
         if (!$this->games->contains($game)) {
             $this->games->add($game);
-            $game->setRefereeId($this);
+            $game->setReferee($this);
         }
 
         return $this;
@@ -83,8 +83,8 @@ class Referee
     {
         if ($this->games->removeElement($game)) {
             // set the owning side to null (unless already changed)
-            if ($game->getRefereeId() === $this) {
-                $game->setRefereeId(null);
+            if ($game->getReferee() === $this) {
+                $game->setReferee(null);
             }
         }
 

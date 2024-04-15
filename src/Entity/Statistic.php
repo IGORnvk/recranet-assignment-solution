@@ -15,7 +15,7 @@ class Statistic
 
     #[ORM\OneToOne(inversedBy: 'statistic', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Team $team_id = null;
+    private ?Team $team = null;
 
     #[ORM\Column]
     private ?int $played = null;
@@ -32,19 +32,22 @@ class Statistic
     #[ORM\Column]
     private ?int $goal_difference = null;
 
+    #[ORM\Column]
+    private ?int $points = null;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getTeamId(): ?Team
+    public function getTeam(): ?Team
     {
-        return $this->team_id;
+        return $this->team;
     }
 
-    public function setTeamId(Team $team_id): static
+    public function setTeam(Team $team): static
     {
-        $this->team_id = $team_id;
+        $this->team = $team;
 
         return $this;
     }
@@ -105,6 +108,18 @@ class Statistic
     public function setGoalDifference(int $goal_difference): static
     {
         $this->goal_difference = $goal_difference;
+
+        return $this;
+    }
+
+    public function getPoints(): ?int
+    {
+        return $this->points;
+    }
+
+    public function setPoints(int $points): static
+    {
+        $this->points = $points;
 
         return $this;
     }

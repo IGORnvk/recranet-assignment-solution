@@ -17,22 +17,22 @@ class Game
     #[ORM\Column(length: 255)]
     private ?string $status = null;
 
-    #[ORM\ManyToOne(inversedBy: 'homeGames')]
+    #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Team $home_team_id = null;
+    private ?Team $home_team = null;
 
-    #[ORM\ManyToOne(inversedBy: 'guestGames')]
+    #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Team $guest_team_id = null;
+    private ?Team $guest_team = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\ManyToOne(inversedBy: 'games')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Referee $referee_id = null;
+    private ?Referee $referee = null;
 
-    #[ORM\OneToOne(mappedBy: 'game_id', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'game', cascade: ['persist', 'remove'])]
     private ?Score $score = null;
 
     public function getId(): ?int
@@ -52,26 +52,26 @@ class Game
         return $this;
     }
 
-    public function getHomeTeamId(): ?Team
+    public function getHomeTeam(): ?Team
     {
-        return $this->home_team_id;
+        return $this->home_team;
     }
 
-    public function setHomeTeamId(?Team $home_team_id): static
+    public function setHomeTeam(?Team $home_team): static
     {
-        $this->home_team_id = $home_team_id;
+        $this->home_team = $home_team;
 
         return $this;
     }
 
-    public function getGuestTeamId(): ?Team
+    public function getGuestTeam(): ?Team
     {
-        return $this->guest_team_id;
+        return $this->guest_team;
     }
 
-    public function setGuestTeamId(?Team $guest_team_id): static
+    public function setGuestTeam(?Team $guest_team): static
     {
-        $this->guest_team_id = $guest_team_id;
+        $this->guest_team = $guest_team;
 
         return $this;
     }
@@ -88,14 +88,14 @@ class Game
         return $this;
     }
 
-    public function getRefereeId(): ?Referee
+    public function getReferee(): ?Referee
     {
-        return $this->referee_id;
+        return $this->referee;
     }
 
-    public function setRefereeId(?Referee $referee_id): static
+    public function setReferee(?Referee $referee): static
     {
-        $this->referee_id = $referee_id;
+        $this->referee = $referee;
 
         return $this;
     }
@@ -108,8 +108,8 @@ class Game
     public function setScore(Score $score): static
     {
         // set the owning side of the relation if necessary
-        if ($score->getGameId() !== $this) {
-            $score->setGameId($this);
+        if ($score->getGame() !== $this) {
+            $score->setGame($this);
         }
 
         $this->score = $score;

@@ -15,7 +15,7 @@ class Score
 
     #[ORM\OneToOne(inversedBy: 'score', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Game $game_id = null;
+    private ?Game $game = null;
 
     #[ORM\Column]
     private ?int $home_score = null;
@@ -28,14 +28,14 @@ class Score
         return $this->id;
     }
 
-    public function getGameId(): ?Game
+    public function getGame(): ?Game
     {
-        return $this->game_id;
+        return $this->game;
     }
 
-    public function setGameId(Game $game_id): static
+    public function setGame(Game $game): static
     {
-        $this->game_id = $game_id;
+        $this->game = $game;
 
         return $this;
     }

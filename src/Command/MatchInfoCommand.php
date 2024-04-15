@@ -53,10 +53,10 @@ class MatchInfoCommand extends Command
         $matches = $response['matches'];
 
         foreach ($matches as $match) {
-            dump($match);
+            dd($match);
         }
 
-        $io->writeln('Data was successfully retrieved');
+        $io->success('Data was successfully updated!');
 
         return Command::FAILURE;
     }
