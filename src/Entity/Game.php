@@ -29,7 +29,7 @@ class Game
     private ?\DateTimeInterface $date = null;
 
     #[ORM\ManyToOne(inversedBy: 'games')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Referee $referee = null;
 
     #[ORM\OneToOne(mappedBy: 'game', cascade: ['persist', 'remove'])]
