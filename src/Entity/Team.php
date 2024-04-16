@@ -21,9 +21,6 @@ class Team
     #[ORM\Column(length: 255)]
     private ?string $logo = null;
 
-    #[ORM\Column]
-    private ?int $position = null;
-
     #[ORM\OneToOne(mappedBy: 'team', cascade: ['persist', 'remove'])]
     private ?Statistic $statistic = null;
 
