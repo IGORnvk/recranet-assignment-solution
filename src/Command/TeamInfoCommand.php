@@ -2,8 +2,6 @@
 
 namespace App\Command;
 
-use App\Repository\SeasonRepository;
-use App\Repository\StatisticRepository;
 use App\Repository\TeamRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -17,7 +15,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 #[AsCommand(
     name: 'teams-info',
-    description: 'Retrieves information about Eredivisie teams',
+    description: 'Updates information about Eredivisie teams',
 )]
 class TeamInfoCommand extends Command
 {
@@ -42,9 +40,9 @@ class TeamInfoCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Retrieves information about Eredivisie teams')
-            ->setHelp('This command allows you to get data about Eredivisie teams and their standings')
-            ->addArgument('year', InputArgument::OPTIONAL, 'Year of the season to get teams info from')
+            ->setDescription('Updates information about Eredivisie teams')
+            ->setHelp('This command allows you to update data about Eredivisie teams and their standings for a particular season')
+            ->addArgument('year', InputArgument::OPTIONAL, 'Year of the season to get teams data from')
         ;
     }
 
@@ -68,6 +66,7 @@ class TeamInfoCommand extends Command
             $teamInfo = $standing['team'];
             $position = $standing['position'];
 
+            // update data of the team
             $this->teamRepository->updateTeam($teamInfo, $position, $standing, $year);
         }
 
