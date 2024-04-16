@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TeamRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TeamRepository::class)]
@@ -24,6 +26,17 @@ class Team
 
     #[ORM\OneToOne(mappedBy: 'team', cascade: ['persist', 'remove'])]
     private ?Statistic $statistic = null;
+
+    /**
+     * @var Collection<int, Season>
+     */
+    #[ORM\ManyToMany(targetEntity: Season::class, mappedBy: 'teams')]
+    private Collection $seasons;
+
+    public function __construct()
+    {
+        $this->seasons = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -79,6 +92,33 @@ class Team
         }
 
         $this->statistic = $statistic;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Season>
+     */
+    public function getSeasons(): Collection
+    {
+        return $this->seasons;
+    }
+
+    public function addSeason(Season $season): static
+    {
+        if (!$this->seasons->contains($season)) {
+            $this->seasons->add($season);
+            $season->addTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSeason(Season $season): static
+    {
+        if ($this->seasons->removeElement($season)) {
+            $season->removeTeam($this);
+        }
 
         return $this;
     }

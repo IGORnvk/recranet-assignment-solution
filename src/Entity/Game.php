@@ -35,6 +35,10 @@ class Game
     #[ORM\OneToOne(mappedBy: 'game', cascade: ['persist', 'remove'])]
     private ?Score $score = null;
 
+    #[ORM\ManyToOne(inversedBy: 'games')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Season $season = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -113,6 +117,18 @@ class Game
         }
 
         $this->score = $score;
+
+        return $this;
+    }
+
+    public function getSeason(): ?Season
+    {
+        return $this->season;
+    }
+
+    public function setSeason(?Season $season): static
+    {
+        $this->season = $season;
 
         return $this;
     }
