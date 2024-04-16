@@ -2,9 +2,9 @@
 
 namespace App\Command;
 
-use App\Entity\Statistic;
-use App\Entity\Team;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\SeasonRepository;
+use App\Repository\StatisticRepository;
+use App\Repository\TeamRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -25,16 +25,16 @@ class TeamInfoCommand extends Command
 
     private RouterInterface $router;
 
-    private EntityManagerInterface $entityManager;
+    private TeamRepository $teamRepository;
 
     private string $league;
 
-    public function __construct(HttpClientInterface $client, string $league, RouterInterface $router, EntityManagerInterface $entityManager)
+    public function __construct(HttpClientInterface $client, string $league, RouterInterface $router, TeamRepository $teamRepository)
     {
         $this->client = $client;
-        $this->router = $router;
-        $this->entityManager = $entityManager;
         $this->league = $league;
+        $this->router = $router;
+        $this->teamRepository = $teamRepository;
 
         parent::__construct();
     }
@@ -44,51 +44,31 @@ class TeamInfoCommand extends Command
         $this
             ->setDescription('Retrieves information about Eredivisie teams')
             ->setHelp('This command allows you to get data about Eredivisie teams and their standings')
+            ->addArgument('year', InputArgument::OPTIONAL, 'Year of the season to get teams info from')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
+        $year = $input->getArgument('year') ? $input->getArgument('year') : date('Y') - 1;
 
         // generate path to a route
         $path = $this->router->generate('football_data_standings', [
             'league' => $this->league,
+            'season' => $input->getArgument('year')
         ]);
 
         // make a request and process response
         $response = $this->client->request('GET', $path)->toArray();
+
         $standings = $response['standings'][0]['table'];
 
         foreach ($standings as $standing) {
-            // create new objects for team and its statistic
-            $team = new Team();
-            $statistic = new Statistic();
-
-            // set all the necessary values for team
-            $team->setPosition($standing['position']);
-
             $teamInfo = $standing['team'];
+            $position = $standing['position'];
 
-            $team
-                ->setName($teamInfo['name'])
-                ->setLogo($teamInfo['crest'])
-            ;
-
-            // set all the necessary values for statistic
-            $statistic
-                ->setTeam($team)
-                ->setPlayed($standing['playedGames'])
-                ->setWon($standing['won'])
-                ->setLost($standing['lost'])
-                ->setDraw($standing['draw'])
-                ->setGoalDifference($standing['goalDifference'])
-            ;
-
-            $this->entityManager->persist($team);
-            $this->entityManager->persist($statistic);
-
-            $this->entityManager->flush();
+            $this->teamRepository->updateTeam($teamInfo, $position, $standing, $year);
         }
 
         $io->success('Teams were successfully updated!');

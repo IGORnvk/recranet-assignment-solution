@@ -42,7 +42,7 @@ class SeasonInsertCommand extends Command
         // get current football season year
         $year = date('Y') - 1;
 
-        $this->seasonRepository->setSeasons(range($year - 3, $year));
+        $this->seasonRepository->insertSeasons(range($year - 3, $year));
 
         $io->success('Seasons were successfully inserted!');
 

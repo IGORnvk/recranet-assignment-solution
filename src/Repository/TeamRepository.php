@@ -16,9 +16,45 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class TeamRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private StatisticRepository $statisticRepository;
+
+    private SeasonTeamRepository $seasonTeamRepository;
+
+    public function __construct(ManagerRegistry $registry, StatisticRepository $statisticRepository, SeasonTeamRepository $seasonTeamRepository)
     {
+        $this->statisticRepository = $statisticRepository;
+        $this->seasonTeamRepository = $seasonTeamRepository;
+
         parent::__construct($registry, Team::class);
+    }
+
+    /**
+     * creates or updates current state of the team
+     * @param array $teamInfo information about the team
+     * @param int $position team's position in the leaderboard
+     * @param array $statistic statistics of the team
+     * @param string $year
+     * @return void
+     */
+    public function updateTeam(array $teamInfo, int $position, array $statistic, string $year): void
+    {
+        $entityManager = $this->getEntityManager();
+
+        // create new object for team
+        $team = $this->findOneBy(['name' => $teamInfo['name']]) ? $this->findOneBy(['name' => $teamInfo['name']]) : new Team();
+
+        // set all the necessary values for team
+        $team
+            ->setName($teamInfo['name'])
+            ->setLogo($teamInfo['crest'])
+        ;
+
+        // update other information related to the team
+        $this->statisticRepository->updateStatistic($statistic, $team);
+        $this->seasonTeamRepository->updateSeasonTeam($year, $team, $position);
+
+        $entityManager->persist($team);
+        $entityManager->flush();
     }
 
 //    /**

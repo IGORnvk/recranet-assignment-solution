@@ -4,7 +4,6 @@ namespace App\Repository;
 
 use App\Entity\Season;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -25,11 +24,13 @@ class SeasonRepository extends ServiceEntityRepository
     /**
      * inserts unique seasons into the database
      * @param array $years seasons that have to be inserted
-     * @return array
+     * @return void
      */
-    public function setSeasons(array $years) {
+    public function insertSeasons(array $years): void
+    {
         $entityManager = $this->getEntityManager();
 
+        // loop through array and insert season if it doesn't exist already
         foreach ($years as $year) {
             if(!$this->findOneBy(['year' => $year])) {
                 $season = new Season();
@@ -40,7 +41,6 @@ class SeasonRepository extends ServiceEntityRepository
                 $entityManager->flush();
             }
         }
-        return $years;
     }
 
 //    /**

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\SeasonTeam;
+use App\Entity\Team;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,9 +17,43 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class SeasonTeamRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private SeasonRepository $seasonRepository;
+
+    public function __construct(ManagerRegistry $registry, SeasonRepository $seasonRepository)
     {
+        $this->seasonRepository = $seasonRepository;
+
         parent::__construct($registry, SeasonTeam::class);
+    }
+
+    /**
+     * creates or updates season_team values
+     * @param string $year year of the season to look for
+     * @param Team $team team to look for
+     * @param int $position position in the leaderboard of the specified team
+     * @return void
+     */
+    public function updateSeasonTeam(string $year, Team $team, int $position): void
+    {
+        $entityManager = $this->getEntityManager();
+
+        // retrieve season
+        $this->seasonRepository->insertSeasons([$year]);
+        $season = $this->seasonRepository->findOneBy(['year' => $year]);
+
+        // retrieve seasonTeam or create a new one
+        $seasonTeam = $this->findOneBy(['team' => $team->getId(), 'season' => $season->getId()]) ?
+            $this->findOneBy(['team' => $team->getId(), 'season' => $season->getId()]) : new SeasonTeam();
+
+        // set values
+        $seasonTeam
+            ->setTeam($team)
+            ->setSeason($season)
+            ->setPosition($position)
+        ;
+
+        $entityManager->persist($seasonTeam);
+        $entityManager->flush();
     }
 
 //    /**

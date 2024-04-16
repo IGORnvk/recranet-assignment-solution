@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Statistic;
+use App\Entity\Team;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,6 +20,33 @@ class StatisticRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Statistic::class);
+    }
+
+    /**
+     * creates or updates new statistic based on passed info
+     * @param array $info information about the team
+     * @param Team $team
+     * @return void
+     */
+    public function updateStatistic(array $info, Team $team): void
+    {
+        $entityManager = $this->getEntityManager();
+
+        $statistic = $this->findOneBy(['team' => $team->getId()]) ? $this->findOneBy(['team' => $team->getId()]) : new Statistic();
+
+        // set all the necessary values for statistic
+        $statistic
+            ->setTeam($team)
+            ->setPlayed($info['playedGames'])
+            ->setWon($info['won'])
+            ->setLost($info['lost'])
+            ->setDraw($info['draw'])
+            ->setGoalDifference($info['goalDifference'])
+            ->setPoints($info['points'])
+        ;
+
+        $entityManager->persist($statistic);
+        $entityManager->flush();
     }
 
 //    /**
