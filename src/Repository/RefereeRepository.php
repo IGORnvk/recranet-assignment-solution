@@ -21,6 +21,31 @@ class RefereeRepository extends ServiceEntityRepository
         parent::__construct($registry, Referee::class);
     }
 
+    /**
+     * creates or updates referee in the database
+     * @param array $refereeInfo information about referee
+     * @return Referee
+     */
+    public function updateReferee(array $refereeInfo): Referee
+    {
+        $entityManager = $this->getEntityManager();
+
+        // create new object for referee or retrieve existing one
+        $referee = $this->findOneBy(['name' => $refereeInfo['name']]) ?
+            $this->findOneBy(['name' => $refereeInfo['name']]) :
+            new Referee();
+
+        $referee
+            ->setName($refereeInfo['name'])
+            ->setNationality($refereeInfo['nationality'])
+        ;
+
+        $entityManager->persist($referee);
+        $entityManager->flush();
+
+        return $referee;
+    }
+
 //    /**
 //     * @return Referee[] Returns an array of Referee objects
 //     */
