@@ -2,9 +2,7 @@
 
 namespace App\Command;
 
-use App\Entity\Season;
 use App\Repository\SeasonRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
