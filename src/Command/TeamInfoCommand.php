@@ -54,7 +54,7 @@ class TeamInfoCommand extends Command
         // generate path to a route
         $path = $this->router->generate('football_data_standings', [
             'league' => $this->league,
-            'season' => $input->getArgument('year')
+            'season' => $year
         ]);
 
         // make a request and process response
