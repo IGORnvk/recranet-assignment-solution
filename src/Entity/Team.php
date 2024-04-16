@@ -28,14 +28,14 @@ class Team
     private ?Statistic $statistic = null;
 
     /**
-     * @var Collection<int, Season>
+     * @var Collection<int, SeasonTeam>
      */
-    #[ORM\ManyToMany(targetEntity: Season::class, mappedBy: 'teams')]
-    private Collection $seasons;
+    #[ORM\OneToMany(targetEntity: SeasonTeam::class, mappedBy: 'team', orphanRemoval: true)]
+    private Collection $seasonTeams;
 
     public function __construct()
     {
-        $this->seasons = new ArrayCollection();
+        $this->seasonTeams = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -67,18 +67,6 @@ class Team
         return $this;
     }
 
-    public function getPosition(): ?int
-    {
-        return $this->position;
-    }
-
-    public function setPosition(int $position): static
-    {
-        $this->position = $position;
-
-        return $this;
-    }
-
     public function getStatistic(): ?Statistic
     {
         return $this->statistic;
@@ -97,27 +85,30 @@ class Team
     }
 
     /**
-     * @return Collection<int, Season>
+     * @return Collection<int, SeasonTeam>
      */
-    public function getSeasons(): Collection
+    public function getSeasonTeams(): Collection
     {
-        return $this->seasons;
+        return $this->seasonTeams;
     }
 
-    public function addSeason(Season $season): static
+    public function addSeasonTeam(SeasonTeam $seasonTeam): static
     {
-        if (!$this->seasons->contains($season)) {
-            $this->seasons->add($season);
-            $season->addTeam($this);
+        if (!$this->seasonTeams->contains($seasonTeam)) {
+            $this->seasonTeams->add($seasonTeam);
+            $seasonTeam->setTeam($this);
         }
 
         return $this;
     }
 
-    public function removeSeason(Season $season): static
+    public function removeSeasonTeam(SeasonTeam $seasonTeam): static
     {
-        if ($this->seasons->removeElement($season)) {
-            $season->removeTeam($this);
+        if ($this->seasonTeams->removeElement($seasonTeam)) {
+            // set the owning side to null (unless already changed)
+            if ($seasonTeam->getTeam() === $this) {
+                $seasonTeam->setTeam(null);
+            }
         }
 
         return $this;
