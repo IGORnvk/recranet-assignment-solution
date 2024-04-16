@@ -26,13 +26,9 @@ services:
     App\Command\MatchInfoCommand:
         arguments:
             - '@football_data.client'
-            - '@router'
-            - '@doctrine.orm.entity_manager'
             - '%env(FOOTBALL_DATA_LEAGUE)%'
 
     App\Command\TeamInfoCommand:
         arguments:
             - '@football_data.client'
-            - '@router'
-            - '@doctrine.orm.entity_manager'
             - '%env(FOOTBALL_DATA_LEAGUE)%'

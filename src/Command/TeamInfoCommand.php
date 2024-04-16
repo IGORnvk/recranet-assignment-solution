@@ -29,7 +29,7 @@ class TeamInfoCommand extends Command
 
     private string $league;
 
-    public function __construct(HttpClientInterface $client, RouterInterface $router, EntityManagerInterface $entityManager, string $league)
+    public function __construct(HttpClientInterface $client, string $league, RouterInterface $router, EntityManagerInterface $entityManager)
     {
         $this->client = $client;
         $this->router = $router;
@@ -51,10 +51,12 @@ class TeamInfoCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
+        // generate path to a route
         $path = $this->router->generate('football_data_standings', [
             'league' => $this->league,
         ]);
 
+        // make a request and process response
         $response = $this->client->request('GET', $path)->toArray();
         $standings = $response['standings'][0]['table'];
 

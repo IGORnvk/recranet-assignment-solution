@@ -22,7 +22,7 @@ class MatchInfoCommand extends Command
 
     private string $league;
 
-    public function __construct(HttpClientInterface $client, RouterInterface $router, string $league)
+    public function __construct(HttpClientInterface $client, string $league, RouterInterface $router)
     {
         $this->client = $client;
         $this->router = $router;
@@ -43,13 +43,13 @@ class MatchInfoCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
+        // generate path to a route
         $path = $this->router->generate('football_data_matches', [
             'league' => $this->league,
-            'escape' => 'javascript'
         ]);
 
-        $response = $this->client->request('GET', $path);
-        $response = $response->toArray();
+        // make a request and process response
+        $response = $this->client->request('GET', $path)->toArray();
         $matches = $response['matches'];
 
         foreach ($matches as $match) {
