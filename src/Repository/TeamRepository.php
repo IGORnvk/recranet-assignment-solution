@@ -49,12 +49,12 @@ class TeamRepository extends ServiceEntityRepository
             ->setLogo($teamInfo['crest'])
         ;
 
-        // update other information related to the team
-        $this->statisticRepository->updateStatistic($statistic, $team);
-        $this->seasonTeamRepository->updateSeasonTeam($year, $team, $position);
-
         $entityManager->persist($team);
         $entityManager->flush();
+
+        // update other information related to the team
+        $seasonTeam = $this->seasonTeamRepository->updateSeasonTeam($year, $team, $position);
+        $this->statisticRepository->updateStatistic($statistic, $seasonTeam);
     }
 
 //    /**

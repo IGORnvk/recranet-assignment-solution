@@ -13,10 +13,6 @@ class Statistic
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(inversedBy: 'statistic', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Team $team = null;
-
     #[ORM\Column]
     private ?int $played = null;
 
@@ -35,21 +31,13 @@ class Statistic
     #[ORM\Column]
     private ?int $points = null;
 
+    #[ORM\OneToOne(inversedBy: 'statistic', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?SeasonTeam $season_team = null;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTeam(): ?Team
-    {
-        return $this->team;
-    }
-
-    public function setTeam(Team $team): static
-    {
-        $this->team = $team;
-
-        return $this;
     }
 
     public function getPlayed(): ?int
@@ -120,6 +108,18 @@ class Statistic
     public function setPoints(int $points): static
     {
         $this->points = $points;
+
+        return $this;
+    }
+
+    public function getSeasonTeam(): ?SeasonTeam
+    {
+        return $this->season_team;
+    }
+
+    public function setSeasonTeam(SeasonTeam $season_team): static
+    {
+        $this->season_team = $season_team;
 
         return $this;
     }

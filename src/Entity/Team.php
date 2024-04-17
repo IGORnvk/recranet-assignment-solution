@@ -21,9 +21,6 @@ class Team
     #[ORM\Column(length: 255)]
     private ?string $logo = null;
 
-    #[ORM\OneToOne(mappedBy: 'team', cascade: ['persist', 'remove'])]
-    private ?Statistic $statistic = null;
-
     /**
      * @var Collection<int, SeasonTeam>
      */
@@ -60,23 +57,6 @@ class Team
     public function setLogo(string $logo): static
     {
         $this->logo = $logo;
-
-        return $this;
-    }
-
-    public function getStatistic(): ?Statistic
-    {
-        return $this->statistic;
-    }
-
-    public function setStatistic(Statistic $statistic): static
-    {
-        // set the owning side of the relation if necessary
-        if ($statistic->getTeam() !== $this) {
-            $statistic->setTeam($this);
-        }
-
-        $this->statistic = $statistic;
 
         return $this;
     }

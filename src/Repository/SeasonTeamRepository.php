@@ -31,9 +31,9 @@ class SeasonTeamRepository extends ServiceEntityRepository
      * @param string $year year of the season to look for
      * @param Team $team team to look for
      * @param int $position position in the leaderboard of the specified team
-     * @return void
+     * @return SeasonTeam|null
      */
-    public function updateSeasonTeam(string $year, Team $team, int $position): void
+    public function updateSeasonTeam(string $year, Team $team, int $position): ?SeasonTeam
     {
         $entityManager = $this->getEntityManager();
 
@@ -54,6 +54,8 @@ class SeasonTeamRepository extends ServiceEntityRepository
 
         $entityManager->persist($seasonTeam);
         $entityManager->flush();
+
+        return $seasonTeam;
     }
 
 //    /**

@@ -24,6 +24,9 @@ class SeasonTeam
     #[ORM\Column]
     private ?int $position = null;
 
+    #[ORM\OneToOne(mappedBy: 'season_team', cascade: ['persist', 'remove'])]
+    private ?Statistic $statistic = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -61,6 +64,23 @@ class SeasonTeam
     public function setPosition(int $position): static
     {
         $this->position = $position;
+
+        return $this;
+    }
+
+    public function getStatistic(): ?Statistic
+    {
+        return $this->statistic;
+    }
+
+    public function setStatistic(Statistic $statistic): static
+    {
+        // set the owning side of the relation if necessary
+        if ($statistic->getSeasonTeam() !== $this) {
+            $statistic->setSeasonTeam($this);
+        }
+
+        $this->statistic = $statistic;
 
         return $this;
     }

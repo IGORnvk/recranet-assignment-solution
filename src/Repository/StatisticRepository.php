@@ -2,8 +2,8 @@
 
 namespace App\Repository;
 
+use App\Entity\SeasonTeam;
 use App\Entity\Statistic;
-use App\Entity\Team;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -25,18 +25,18 @@ class StatisticRepository extends ServiceEntityRepository
     /**
      * creates or updates new statistic based on passed info
      * @param array $info information about the team
-     * @param Team $team
+     * @param SeasonTeam $seasonTeam team in a specific season to pair statistic with
      * @return void
      */
-    public function updateStatistic(array $info, Team $team): void
+    public function updateStatistic(array $info, SeasonTeam $seasonTeam): void
     {
         $entityManager = $this->getEntityManager();
 
-        $statistic = $this->findOneBy(['team' => $team->getId()]) ? $this->findOneBy(['team' => $team->getId()]) : new Statistic();
+        $statistic = $this->findOneBy(['season_team' => $seasonTeam->getId()]) ? $this->findOneBy(['season_team' => $seasonTeam->getId()]) : new Statistic();
 
         // set all the necessary values for statistic
         $statistic
-            ->setTeam($team)
+            ->setSeasonTeam($seasonTeam)
             ->setPlayed($info['playedGames'])
             ->setWon($info['won'])
             ->setLost($info['lost'])

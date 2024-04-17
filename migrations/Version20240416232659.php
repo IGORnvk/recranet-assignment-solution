@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240416215611 extends AbstractMigration
+final class Version20240416232659 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -25,7 +25,7 @@ final class Version20240416215611 extends AbstractMigration
             "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MySQL80Platform'."
         );
 
-        $this->addSql('CREATE TABLE statistic (id INT AUTO_INCREMENT NOT NULL, team_id INT NOT NULL, played INT NOT NULL, won INT NOT NULL, lost INT NOT NULL, draw INT NOT NULL, goal_difference INT NOT NULL, points INT NOT NULL, UNIQUE INDEX UNIQ_649B469C296CD8AE (team_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = \'\' ');
+        $this->addSql('CREATE TABLE statistic (id INT AUTO_INCREMENT NOT NULL, season_team_id INT NOT NULL, played INT NOT NULL, won INT NOT NULL, lost INT NOT NULL, draw INT NOT NULL, goal_difference INT NOT NULL, points INT NOT NULL, UNIQUE INDEX UNIQ_649B469CC1571F0 (season_team_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = \'\' ');
         $this->abortIf(
             !$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\MySQL80Platform,
             "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MySQL80Platform'."
