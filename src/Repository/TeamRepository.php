@@ -59,6 +59,13 @@ class TeamRepository extends ServiceEntityRepository
         $this->statisticRepository->updateStatistic($statistic, $seasonTeam);
     }
 
+    /**
+     * updates user_team relation based on condition
+     * @param User|UserInterface $user user to add or remove from team
+     * @param Team $team team to manage
+     * @param string $follow condition (true or false in form of string, can't pass booleans in routes)
+     * @return void
+     */
     public function updateUserRelation(User|UserInterface $user, Team $team, string $follow)
     {
         $entityManager = $this->getEntityManager();
