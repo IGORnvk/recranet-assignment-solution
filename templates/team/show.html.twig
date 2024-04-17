@@ -1,62 +1,64 @@
 {% extends 'layouts/app.html.twig' %}
 
-{% block title %}Matches for {{ team.getName() }}{% endblock %}
+{% block title %}Matches for {{ team.getName() }} {{ year }}{% endblock %}
 
 {% block additionalTitle %}
-        <img alt="{{ team.getName() }}" src="{{ team.getLogo() }}">
+    <img alt="{{ team.getName() }}" src="{{ team.getLogo() }}">
 {% endblock %}
 
 {% block content %}
-    <table class="w-full mx-8">
-        <thead>
-        <tr class="border-b-2">
-            <th class="text-left">Match</th>
-            <th>Status</th>
-            <th>Score</th>
-            <th>Date</th>
-            <th>Referee</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for game in pager %}
-            <tr class="border-b-2 border-spacing-4">
-                <td class="flex flex-col gap-2 my-4">
-                    <div class="flex gap-1 items-center">
-                        <img src="{{ game.getHomeTeam().getLogo() }}" alt="{{ game.getHomeTeam().getName() }}" class="w-4 h-4"> {{ game.getHomeTeam().getName() }}
-                    </div>
-                    <div class="flex gap-1 items-center">
-                        <img src="{{ game.getGuestTeam().getLogo() }}" alt="{{ game.getGuestTeam().getName() }}" class="w-4 h-4"> {{ game.getGuestTeam().getName() }}
-                    </div>
-                </td>
-                <td class="text-center">{{ game.status }}</td>
-                <td class="text-center">
-                    {% if game.getScore() %}
-                        <div class="flex flex-col gap-2 my-4 items-center justify-center">
-                            <div>
-                                {{ game.getScore.getHomeScore() }}
-                            </div>
-                            <div>
-                                {{ game.getScore().getGuestScore() }}
-                            </div>
+    <twig:Box pager="{{ pager }}">
+        <table class="w-full mx-8">
+            <thead>
+            <tr class="border-b-2">
+                <th class="text-left">Match</th>
+                <th>Status</th>
+                <th>Score</th>
+                <th>Date</th>
+                <th>Referee</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for game in pager %}
+                <tr class="border-b-2 border-spacing-4">
+                    <td class="flex flex-col gap-2 my-4">
+                        <div class="flex gap-1 items-center">
+                            <img src="{{ game.getHomeTeam().getLogo() }}" alt="{{ game.getHomeTeam().getName() }}" class="w-4 h-4"> {{ game.getHomeTeam().getName() }}
                         </div>
-                    {% else %}
-                        <div>TBD</div>
-                    {% endif %}
+                        <div class="flex gap-1 items-center">
+                            <img src="{{ game.getGuestTeam().getLogo() }}" alt="{{ game.getGuestTeam().getName() }}" class="w-4 h-4"> {{ game.getGuestTeam().getName() }}
+                        </div>
+                    </td>
+                    <td class="text-center">{{ game.status }}</td>
+                    <td class="text-center">
+                        {% if game.getScore() %}
+                            <div class="flex flex-col gap-2 my-4 items-center justify-center">
+                                <div>
+                                    {{ game.getScore.getHomeScore() }}
+                                </div>
+                                <div>
+                                    {{ game.getScore().getGuestScore() }}
+                                </div>
+                            </div>
+                        {% else %}
+                            <div>TBD</div>
+                        {% endif %}
 
-                </td>
-                <td class="text-center">{{ game.date |date('d-m-Y') }}</td>
-                <td class="text-center">
-                    {% if game.getReferee() %}
+                    </td>
+                    <td class="text-center">{{ game.date |date('d-m-Y') }}</td>
+                    <td class="text-center">
+                        {% if game.getReferee() %}
                         {{ game.getReferee().getName() }}</td>
                     {% else %}
                         TBD
                     {% endif %}
-            </tr>
-        {% endfor %}
+                </tr>
+            {% endfor %}
 
-        <div class="mt-6">
-            {{ pagerfanta(pager) }}
-        </div>
-        </tbody>
-    </table>
+            <div class="mt-6">
+                {{ pagerfanta(pager) }}
+            </div>
+            </tbody>
+        </table>
+    </twig:Box>
 {% endblock %}

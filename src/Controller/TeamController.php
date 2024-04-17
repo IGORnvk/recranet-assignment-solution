@@ -5,6 +5,9 @@ namespace App\Controller;
 use App\Repository\GameRepository;
 use App\Repository\SeasonRepository;
 use App\Repository\TeamRepository;
+use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,10 +32,10 @@ class TeamController extends AbstractController
     public function show(SeasonRepository $seasonRepository, TeamRepository $teamRepository, GameRepository $gameRepository, Request $request, string $year, int $teamId): Response
     {
         $season = $seasonRepository->findOneBy(['year' => $year]);
-        $team = $teamRepository->findOneBy(['id' => $teamId]);
-        $games = $gameRepository->findByTeamId($teamId, $season->getId());
+        $team = $teamRepository->find($teamId);
 
         // create pagination
+        $games = $gameRepository->findByTeamId($teamId, $season->getId());
         $adapter = new QueryAdapter($games);
         $pagerfanta = Pagerfanta::createForCurrentPageWithMaxPerPage(
             $adapter,
@@ -41,10 +44,20 @@ class TeamController extends AbstractController
         );
 
         return $this->render('team/show.html.twig', [
-            'games' => $games,
             'year' => $year,
             'team' => $team,
             'pager' => $pagerfanta
         ]);
+    }
+
+    #[Route('/team/follow/{follow}/{teamId}', name: 'team_user')]
+    public function updateUserTeam(TeamRepository $teamRepository, $follow, int $teamId): Response
+    {
+        $team = $teamRepository->find($teamId);
+        $user = $this->getUser();
+
+        $teamRepository->updateUserRelation($user, $team, $follow);
+
+        return $this->redirectToRoute('teams', ['year' => date('Y') - 1]);
     }
 }

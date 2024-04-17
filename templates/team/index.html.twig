@@ -7,35 +7,46 @@
 {% endblock %}
 
 {% block content %}
-    <table class="w-full text-left mx-8 mt-4">
-        <thead>
-        <tr class="border-b-2">
-            <th>Position</th>
-            <th>Name</th>
-            <th>Played</th>
-            <th>Won</th>
-            <th>Lost</th>
-            <th>Draw</th>
-            <th>Goal Difference</th>
-            <th>Points</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for team in teams %}
+    <twig:Box teams="{{ teams }}" year="{{ year }}">
+        <table class="w-full text-left mx-8 mt-4">
+            <thead>
             <tr class="border-b-2">
-                <td>{{ team.position }}</td>
-                <td class="flex gap-2 items-center">
-                    <img src="{{ team.team.getLogo() }}" alt="{{ team.team.getName() }}" class="w-4 h-4">
-                    <a class="text-blue-500 hover:text-blue-800" href="{{ path('team_details', {year: year, teamId: team.team.getId()}) }}">{{ team.team.getName() }}</a>
-                </td>
-                <td>{{ team.getStatistic().played }}</td>
-                <td>{{ team.getStatistic().won }}</td>
-                <td>{{ team.getStatistic().lost }}</td>
-                <td>{{ team.getStatistic().draw }}</td>
-                <td>{{ team.getStatistic().goalDifference }}</td>
-                <td>{{ team.getStatistic().points }}</td>
+                <th>Position</th>
+                <th>Name</th>
+                <th>Played</th>
+                <th>Won</th>
+                <th>Lost</th>
+                <th>Draw</th>
+                <th>Goal Difference</th>
+                <th>Points</th>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for team in teams %}
+                <tr class="border-b-2">
+                    <td>{{ team.position }}</td>
+                    <td class="flex gap-2 items-center">
+                        <img src="{{ team.team.getLogo() }}" alt="{{ team.team.getName() }}" class="w-4 h-4">
+                        <a class="text-blue-500 hover:text-blue-800" href="{{ path('team_details', {year: year, teamId: team.team.getId()}) }}">{{ team.team.getName() }}</a>
+                    </td>
+                    <td>{{ team.getStatistic().played }}</td>
+                    <td>{{ team.getStatistic().won }}</td>
+                    <td>{{ team.getStatistic().lost }}</td>
+                    <td>{{ team.getStatistic().draw }}</td>
+                    <td>{{ team.getStatistic().goalDifference }}</td>
+                    <td>{{ team.getStatistic().points }}</td>
+                    {% if year == 'now'|date('Y') - 1 %}
+                        <td>
+                        {% if app.user not in team.team.getUsers() %}
+                            <a class="px-5 bg-sky-600 hover:bg-sky-700 rounded-lg text-sm text-white" href="{{ path('team_user', {follow: 'true', teamId: team.id}) }}">Follow</a>
+                        {% else %}
+                            <a class="px-3 bg-red-400 hover:bg-red-500 rounded-lg text-sm text-white" href="{{ path('team_user', {follow: 'false', teamId: team.id}) }}">Unfollow</a>
+                        {% endif %}
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </twig:Box>
 {% endblock %}

@@ -6,6 +6,7 @@ use App\Repository\TeamRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: TeamRepository::class)]
 class Team
@@ -27,9 +28,16 @@ class Team
     #[ORM\OneToMany(targetEntity: SeasonTeam::class, mappedBy: 'team', orphanRemoval: true)]
     private Collection $seasonTeams;
 
+    /**
+     * @var Collection<int, User>
+     */
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'team')]
+    private Collection $users;
+
     public function __construct()
     {
         $this->seasonTeams = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -86,6 +94,33 @@ class Team
             if ($seasonTeam->getTeam() === $this) {
                 $seasonTeam->setTeam(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): static
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->addTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): static
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeTeam($this);
         }
 
         return $this;

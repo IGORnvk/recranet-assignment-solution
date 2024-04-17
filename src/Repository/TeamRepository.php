@@ -3,8 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Team;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @extends ServiceEntityRepository<Team>
@@ -55,6 +57,20 @@ class TeamRepository extends ServiceEntityRepository
         // update other information related to the team
         $seasonTeam = $this->seasonTeamRepository->updateSeasonTeam($year, $team, $position);
         $this->statisticRepository->updateStatistic($statistic, $seasonTeam);
+    }
+
+    public function updateUserRelation(User|UserInterface $user, Team $team, string $follow)
+    {
+        $entityManager = $this->getEntityManager();
+
+        if ($follow == 'true') {
+            $team->addUser($user);
+        } else {
+            $team->removeUser($user);
+        }
+
+        $entityManager->persist($team);
+        $entityManager->flush();
     }
 
 //    /**

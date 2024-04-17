@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240416232659 extends AbstractMigration
+final class Version20240417155408 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -25,31 +25,7 @@ final class Version20240416232659 extends AbstractMigration
             "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MySQL80Platform'."
         );
 
-        $this->addSql('CREATE TABLE statistic (id INT AUTO_INCREMENT NOT NULL, season_team_id INT NOT NULL, played INT NOT NULL, won INT NOT NULL, lost INT NOT NULL, draw INT NOT NULL, goal_difference INT NOT NULL, points INT NOT NULL, UNIQUE INDEX UNIQ_649B469CC1571F0 (season_team_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = \'\' ');
-        $this->abortIf(
-            !$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\MySQL80Platform,
-            "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MySQL80Platform'."
-        );
-
-        $this->addSql('CREATE TABLE game (id INT AUTO_INCREMENT NOT NULL, home_team_id INT NOT NULL, guest_team_id INT NOT NULL, referee_id INT DEFAULT NULL, season_id INT NOT NULL, status VARCHAR(255) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, date DATE NOT NULL, INDEX IDX_232B318C4EC001D1 (season_id), INDEX IDX_232B318C4A087CA2 (referee_id), INDEX IDX_232B318C69A91CE2 (guest_team_id), INDEX IDX_232B318C9C4C13F6 (home_team_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = \'\' ');
-        $this->abortIf(
-            !$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\MySQL80Platform,
-            "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MySQL80Platform'."
-        );
-
-        $this->addSql('CREATE TABLE season_team (id INT AUTO_INCREMENT NOT NULL, season_id INT NOT NULL, team_id INT NOT NULL, position INT NOT NULL, INDEX IDX_42A93A81296CD8AE (team_id), INDEX IDX_42A93A814EC001D1 (season_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = \'\' ');
-        $this->abortIf(
-            !$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\MySQL80Platform,
-            "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MySQL80Platform'."
-        );
-
-        $this->addSql('CREATE TABLE season (id INT AUTO_INCREMENT NOT NULL, year VARCHAR(4) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = \'\' ');
-        $this->abortIf(
-            !$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\MySQL80Platform,
-            "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MySQL80Platform'."
-        );
-
-        $this->addSql('CREATE TABLE user (id INT AUTO_INCREMENT NOT NULL, email VARCHAR(180) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, roles JSON NOT NULL, password VARCHAR(255) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, is_verified TINYINT(1) NOT NULL, name VARCHAR(255) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, UNIQUE INDEX UNIQ_IDENTIFIER_EMAIL (email), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = \'\' ');
+        $this->addSql('CREATE TABLE score (id INT AUTO_INCREMENT NOT NULL, game_id INT NOT NULL, home_score INT NOT NULL, guest_score INT NOT NULL, UNIQUE INDEX UNIQ_32993751E48FD905 (game_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = \'\' ');
         $this->abortIf(
             !$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\MySQL80Platform,
             "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MySQL80Platform'."
@@ -61,13 +37,43 @@ final class Version20240416232659 extends AbstractMigration
             "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MySQL80Platform'."
         );
 
-        $this->addSql('CREATE TABLE score (id INT AUTO_INCREMENT NOT NULL, game_id INT NOT NULL, home_score INT NOT NULL, guest_score INT NOT NULL, UNIQUE INDEX UNIQ_32993751E48FD905 (game_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = \'\' ');
+        $this->addSql('CREATE TABLE season (id INT AUTO_INCREMENT NOT NULL, year VARCHAR(4) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = \'\' ');
+        $this->abortIf(
+            !$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\MySQL80Platform,
+            "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MySQL80Platform'."
+        );
+
+        $this->addSql('CREATE TABLE statistic (id INT AUTO_INCREMENT NOT NULL, season_team_id INT NOT NULL, played INT NOT NULL, won INT NOT NULL, lost INT NOT NULL, draw INT NOT NULL, goal_difference INT NOT NULL, points INT NOT NULL, UNIQUE INDEX UNIQ_649B469CC1571F0 (season_team_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = \'\' ');
         $this->abortIf(
             !$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\MySQL80Platform,
             "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MySQL80Platform'."
         );
 
         $this->addSql('CREATE TABLE referee (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, nationality VARCHAR(255) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = \'\' ');
+        $this->abortIf(
+            !$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\MySQL80Platform,
+            "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MySQL80Platform'."
+        );
+
+        $this->addSql('CREATE TABLE user_team (user_id INT NOT NULL, team_id INT NOT NULL, INDEX IDX_BE61EAD6296CD8AE (team_id), INDEX IDX_BE61EAD6A76ED395 (user_id), PRIMARY KEY(user_id, team_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = \'\' ');
+        $this->abortIf(
+            !$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\MySQL80Platform,
+            "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MySQL80Platform'."
+        );
+
+        $this->addSql('CREATE TABLE game (id INT AUTO_INCREMENT NOT NULL, home_team_id INT NOT NULL, guest_team_id INT NOT NULL, referee_id INT DEFAULT NULL, season_id INT NOT NULL, status VARCHAR(255) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, date DATE NOT NULL, INDEX IDX_232B318C4EC001D1 (season_id), INDEX IDX_232B318C4A087CA2 (referee_id), INDEX IDX_232B318C69A91CE2 (guest_team_id), INDEX IDX_232B318C9C4C13F6 (home_team_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = \'\' ');
+        $this->abortIf(
+            !$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\MySQL80Platform,
+            "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MySQL80Platform'."
+        );
+
+        $this->addSql('CREATE TABLE user (id INT AUTO_INCREMENT NOT NULL, email VARCHAR(180) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, roles JSON NOT NULL, password VARCHAR(255) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, is_verified TINYINT(1) NOT NULL, name VARCHAR(255) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, UNIQUE INDEX UNIQ_IDENTIFIER_EMAIL (email), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = \'\' ');
+        $this->abortIf(
+            !$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\MySQL80Platform,
+            "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MySQL80Platform'."
+        );
+
+        $this->addSql('CREATE TABLE season_team (id INT AUTO_INCREMENT NOT NULL, season_id INT NOT NULL, team_id INT NOT NULL, position INT NOT NULL, INDEX IDX_42A93A81296CD8AE (team_id), INDEX IDX_42A93A814EC001D1 (season_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = \'\' ');
         $this->abortIf(
             !$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\MySQL80Platform,
             "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MySQL80Platform'."
@@ -84,31 +90,7 @@ final class Version20240416232659 extends AbstractMigration
             "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MySQL80Platform'."
         );
 
-        $this->addSql('DROP TABLE statistic');
-        $this->abortIf(
-            !$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\MySQL80Platform,
-            "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MySQL80Platform'."
-        );
-
-        $this->addSql('DROP TABLE game');
-        $this->abortIf(
-            !$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\MySQL80Platform,
-            "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MySQL80Platform'."
-        );
-
-        $this->addSql('DROP TABLE season_team');
-        $this->abortIf(
-            !$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\MySQL80Platform,
-            "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MySQL80Platform'."
-        );
-
-        $this->addSql('DROP TABLE season');
-        $this->abortIf(
-            !$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\MySQL80Platform,
-            "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MySQL80Platform'."
-        );
-
-        $this->addSql('DROP TABLE user');
+        $this->addSql('DROP TABLE score');
         $this->abortIf(
             !$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\MySQL80Platform,
             "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MySQL80Platform'."
@@ -120,13 +102,43 @@ final class Version20240416232659 extends AbstractMigration
             "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MySQL80Platform'."
         );
 
-        $this->addSql('DROP TABLE score');
+        $this->addSql('DROP TABLE season');
+        $this->abortIf(
+            !$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\MySQL80Platform,
+            "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MySQL80Platform'."
+        );
+
+        $this->addSql('DROP TABLE statistic');
         $this->abortIf(
             !$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\MySQL80Platform,
             "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MySQL80Platform'."
         );
 
         $this->addSql('DROP TABLE referee');
+        $this->abortIf(
+            !$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\MySQL80Platform,
+            "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MySQL80Platform'."
+        );
+
+        $this->addSql('DROP TABLE user_team');
+        $this->abortIf(
+            !$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\MySQL80Platform,
+            "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MySQL80Platform'."
+        );
+
+        $this->addSql('DROP TABLE game');
+        $this->abortIf(
+            !$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\MySQL80Platform,
+            "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MySQL80Platform'."
+        );
+
+        $this->addSql('DROP TABLE user');
+        $this->abortIf(
+            !$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\MySQL80Platform,
+            "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MySQL80Platform'."
+        );
+
+        $this->addSql('DROP TABLE season_team');
         $this->abortIf(
             !$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\MySQL80Platform,
             "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MySQL80Platform'."
