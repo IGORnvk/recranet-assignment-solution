@@ -1,0 +1,26 @@
+{% extends 'layouts/app.html.twig' %}
+
+{% block title %}Teams {{ year }}{% endblock %}
+
+{% block content %}
+    <table class="w-full text-left mx-8">
+        <thead>
+        <tr>
+            <th>Position</th>
+            <th>Name</th>
+            <th>Points</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for team in teams %}
+            <tr>
+                <td>{{ team.position }}</td>
+                <td class="flex gap-2 items-center">
+                    <img src="{{ team.team.getLogo() }}" alt="{{ team.team.getName() }}" class="w-4 h-4"> {{ team.team.getName() }}
+                </td>
+                <td>{{ team.getStatistic().points }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
