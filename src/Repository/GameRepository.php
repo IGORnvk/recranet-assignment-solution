@@ -3,8 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Game;
+use App\Entity\Season;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -87,6 +89,29 @@ class GameRepository extends ServiceEntityRepository
 
         $entityManager->persist($game);
         $entityManager->flush();
+    }
+
+    /**
+     * retrieves the latest game(s) of the particular season for every team in the collection
+     * @param Collection $teams teams to retrieve game(s) from
+     * @param Season $season season to retrieve a game from
+     * @return array array of the latest game(s)
+     */
+    public function getLatestGamesForTeams(Collection $teams, Season $season): array
+    {
+        $games = [];
+        foreach ($teams as $team) {
+            $latestGame = $this->findByTeamId($team->getId(), $season->getId())
+                ->andWhere("g.status = 'FINISHED'")
+                ->setMaxResults(1)
+                ->getQuery()
+                ->execute();
+            if ($latestGame && !in_array($latestGame[0], $games)) {
+                $games[] = reset($latestGame);
+            }
+        }
+
+        return $games;
     }
 
     /**

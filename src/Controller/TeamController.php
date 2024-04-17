@@ -5,9 +5,6 @@ namespace App\Controller;
 use App\Repository\GameRepository;
 use App\Repository\SeasonRepository;
 use App\Repository\TeamRepository;
-use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,13 +15,18 @@ use Symfony\Component\Routing\Attribute\Route;
 class TeamController extends AbstractController
 {
     #[Route('/teams/{year}', name: 'teams')]
-    public function index(SeasonRepository $seasonRepository, string $year): Response
+    public function index(GameRepository $gameRepository, SeasonRepository $seasonRepository, string $year): Response
     {
         $season = $seasonRepository->findOneBy(['year' => $year]);
 
+        // retrieve the latest games for followed teams by the user
+        $teams = $this->getUser()->getTeam();
+        $latestGames = $gameRepository->getLatestGamesForTeams($teams, $season) ?: 'not available';
+
         return $this->render('team/index.html.twig', [
             'teams' => $season->getSeasonTeams(),
-            'year' => $year
+            'year' => $year,
+            'latestGames' => $latestGames
         ]);
     }
 

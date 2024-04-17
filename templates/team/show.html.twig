@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block content %}
-    <twig:Box pager="{{ pager }}">
+    <twig:Box>
         <table class="w-full mx-8">
             <thead>
             <tr class="border-b-2">
@@ -48,10 +48,11 @@
                     <td class="text-center">{{ game.date |date('d-m-Y') }}</td>
                     <td class="text-center">
                         {% if game.getReferee() %}
-                        {{ game.getReferee().getName() }}</td>
-                    {% else %}
-                        TBD
-                    {% endif %}
+                            {{ game.getReferee().getName() }}
+                        {% else %}
+                            TBD
+                        {% endif %}
+                    </td>
                 </tr>
             {% endfor %}
 
