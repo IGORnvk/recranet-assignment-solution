@@ -2,12 +2,21 @@
 
 {% block title %}Teams {{ year }}{% endblock %}
 
+{% block additionalTitle %}
+    <p class="text-3xl">Season {{ year }}</p>
+{% endblock %}
+
 {% block content %}
     <table class="w-full text-left mx-8 mt-4">
         <thead>
         <tr class="border-b-2">
             <th>Position</th>
             <th>Name</th>
+            <th>Played</th>
+            <th>Won</th>
+            <th>Lost</th>
+            <th>Draw</th>
+            <th>Goal Difference</th>
             <th>Points</th>
         </tr>
         </thead>
@@ -17,8 +26,13 @@
                 <td>{{ team.position }}</td>
                 <td class="flex gap-2 items-center">
                     <img src="{{ team.team.getLogo() }}" alt="{{ team.team.getName() }}" class="w-4 h-4">
-                    <a class="text-blue-500 hover:text-blue-800" href="{{ path('team_details', {year: year, team: team.team.getId()}) }}">{{ team.team.getName() }}</a>
+                    <a class="text-blue-500 hover:text-blue-800" href="{{ path('team_details', {year: year, teamId: team.team.getId()}) }}">{{ team.team.getName() }}</a>
                 </td>
+                <td>{{ team.getStatistic().played }}</td>
+                <td>{{ team.getStatistic().won }}</td>
+                <td>{{ team.getStatistic().lost }}</td>
+                <td>{{ team.getStatistic().draw }}</td>
+                <td>{{ team.getStatistic().goalDifference }}</td>
                 <td>{{ team.getStatistic().points }}</td>
             </tr>
         {% endfor %}

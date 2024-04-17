@@ -1,9 +1,13 @@
 {% extends 'layouts/app.html.twig' %}
 
-{% block title %}Matches for {{ team }}{% endblock %}
+{% block title %}Matches for {{ team.getName() }}{% endblock %}
+
+{% block additionalTitle %}
+        <img alt="{{ team.getName() }}" src="{{ team.getLogo() }}">
+{% endblock %}
 
 {% block content %}
-    <table class="w-full mx-8 mt-4">
+    <table class="w-full mx-8">
         <thead>
         <tr class="border-b-2">
             <th class="text-left">Match</th>

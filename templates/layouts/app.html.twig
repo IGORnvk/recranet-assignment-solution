@@ -12,7 +12,11 @@
         </li>
     </ul>
 
-    <div class="flex mt-24">
+    <div class="flex justify-center my-16">
+        {% block additionalTitle %}{% endblock %}
+    </div>
+
+    <div class="flex">
         <div class="m-auto border border-2 border-gray-300 rounded-lg shadow-lg flex flex-col gap-10 items-center justify-center px-6 pb-6">
             {% block content %}{% endblock %}
         </div>

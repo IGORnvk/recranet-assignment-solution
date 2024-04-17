@@ -25,12 +25,12 @@ class TeamController extends AbstractController
         ]);
     }
 
-    #[Route('/teams/{year}/{team}', name: 'team_details')]
-    public function show(SeasonRepository $seasonRepository, TeamRepository $teamRepository, GameRepository $gameRepository, Request $request, string $year, int $team): Response
+    #[Route('/teams/{year}/{teamId}', name: 'team_details')]
+    public function show(SeasonRepository $seasonRepository, TeamRepository $teamRepository, GameRepository $gameRepository, Request $request, string $year, int $teamId): Response
     {
         $season = $seasonRepository->findOneBy(['year' => $year]);
-        $teamName = $teamRepository->findOneBy(['id' => $team])->getName();
-        $games = $gameRepository->findByTeamId($team, $season->getId());
+        $team = $teamRepository->findOneBy(['id' => $teamId]);
+        $games = $gameRepository->findByTeamId($teamId, $season->getId());
 
         // create pagination
         $adapter = new QueryAdapter($games);
@@ -43,7 +43,7 @@ class TeamController extends AbstractController
         return $this->render('team/show.html.twig', [
             'games' => $games,
             'year' => $year,
-            'team' => $teamName,
+            'team' => $team,
             'pager' => $pagerfanta
         ]);
     }
