@@ -3,9 +3,9 @@
 {% block title %}Teams {{ year }}{% endblock %}
 
 {% block content %}
-    <table class="w-full text-left mx-8">
+    <table class="w-full text-left mx-8 mt-4">
         <thead>
-        <tr>
+        <tr class="border-b-2">
             <th>Position</th>
             <th>Name</th>
             <th>Points</th>
@@ -13,10 +13,11 @@
         </thead>
         <tbody>
         {% for team in teams %}
-            <tr>
+            <tr class="border-b-2">
                 <td>{{ team.position }}</td>
                 <td class="flex gap-2 items-center">
-                    <img src="{{ team.team.getLogo() }}" alt="{{ team.team.getName() }}" class="w-4 h-4"> {{ team.team.getName() }}
+                    <img src="{{ team.team.getLogo() }}" alt="{{ team.team.getName() }}" class="w-4 h-4">
+                    <a class="text-blue-500 hover:text-blue-800" href="{{ path('team_details', {year: year, team: team.team.getId()}) }}">{{ team.team.getName() }}</a>
                 </td>
                 <td>{{ team.getStatistic().points }}</td>
             </tr>

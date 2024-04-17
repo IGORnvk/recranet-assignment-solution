@@ -136,6 +136,10 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/webpack-encore-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfonycasts/verify-email-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/rate-limiter" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/pagerfanta/doctrine-orm-adapter" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/pagerfanta/core" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/babdev/pagerfanta-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/pagerfanta/twig" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

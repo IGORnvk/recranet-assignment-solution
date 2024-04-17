@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Game;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -88,20 +89,20 @@ class GameRepository extends ServiceEntityRepository
         $entityManager->flush();
     }
 
-//    /**
-//     * @return Game[] Returns an array of Game objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('g')
-//            ->andWhere('g.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('g.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * retrieves games for a particular team in a particular season
+     * @return QueryBuilder returns an array of Game objects
+     */
+    public function findByTeamId(int $teamId, int $seasonId): QueryBuilder
+    {
+        return $this->createQueryBuilder('g')
+            ->andWhere('g.season = :season_id')
+            ->andWhere('g.home_team = :team_id OR g.guest_team = :team_id')
+            ->setParameter('season_id', $seasonId)
+            ->setParameter('team_id', $teamId)
+            ->orderBy('g.date', 'DESC')
+        ;
+    }
 
 //    public function findOneBySomeField($value): ?Game
 //    {
