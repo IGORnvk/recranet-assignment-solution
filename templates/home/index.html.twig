@@ -4,12 +4,16 @@
 
 
 {% block content %}
-    <twig:Box seasons="{{ seasons }}">
+    <twig:Box>
         <p class="mt-4 text-lg">Select available season</p>
-        <div class="flex gap-4">
-            {% for season in seasons %}
-                <a class="px-4 py-2 bg-sky-600 hover:bg-sky-700 rounded-lg text-white" href="{{ path('teams', {year: season.year}) }}">{{ season.year }}</a>
-            {% endfor %}
-        </div>
+        {% if seasons %}
+            <div class="flex gap-4">
+                {% for season in seasons %}
+                    <a class="px-4 py-2 bg-sky-600 hover:bg-sky-700 rounded-lg text-white" href="{{ path('teams', {year: season.year}) }}">{{ season.year }}</a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-lg">No available seasons!</p>
+        {% endif %}
     </twig:Box>
 {% endblock %}
