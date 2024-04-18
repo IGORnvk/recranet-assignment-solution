@@ -36,6 +36,7 @@ security:
     access_control:
         - { path: ^/home, roles: ROLE_USER }
         - { path: ^/teams, roles: ROLE_USER }
+        - { path: ^/team/follow, roles: ROLE_USER }
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 
