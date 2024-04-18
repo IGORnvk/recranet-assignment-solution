@@ -36,12 +36,11 @@ class SeasonTeamRepository extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
 
         // retrieve season
-        $this->seasonRepository->insertSeasons([$year]);
+        $this->seasonRepository->insertSeason($year);
         $season = $this->seasonRepository->findOneBy(['year' => $year]);
 
         // retrieve seasonTeam or create a new one
-        $seasonTeam = $this->findOneBy(['team' => $team->getId(), 'season' => $season->getId()]) ?
-            $this->findOneBy(['team' => $team->getId(), 'season' => $season->getId()]) : new SeasonTeam();
+        $seasonTeam = $this->findOneBy(['team' => $team->getId(), 'season' => $season->getId()]) ?: new SeasonTeam();
 
         // set values
         $seasonTeam

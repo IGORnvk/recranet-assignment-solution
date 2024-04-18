@@ -32,7 +32,7 @@ class StatisticRepository extends ServiceEntityRepository
     {
         $entityManager = $this->getEntityManager();
 
-        $statistic = $this->findOneBy(['season_team' => $seasonTeam->getId()]) ? $this->findOneBy(['season_team' => $seasonTeam->getId()]) : new Statistic();
+        $statistic = $this->findOneBy(['season_team' => $seasonTeam->getId()]) ?: new Statistic();
 
         // set all the necessary values for statistic
         $statistic

@@ -50,13 +50,12 @@ class GameRepository extends ServiceEntityRepository
         $guestTeam = $this->teamRepository->findOneBy(['name' => $guestTeamName]);
 
         // retrieve season
-        $this->seasonRepository->insertSeasons([$year]);
+        $this->seasonRepository->insertSeason($year);
         $season = $this->seasonRepository->findOneBy(['year' => $year]);
 
         // create new object for game or retrieve existing one
         $game = $this->findOneBy(['home_team' => $homeTeam->getId(), 'guest_team' => $guestTeam->getId(),
-                'season' => $season->getId()]) ?:
-            new Game();
+                'season' => $season->getId()]) ?: new Game();
 
         // set all the necessary values
         $game

@@ -39,7 +39,7 @@ class TeamRepository extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
 
         // create new object for team or retrieve existing
-        $team = $this->findOneBy(['name' => $teamInfo['name']]) ? $this->findOneBy(['name' => $teamInfo['name']]) : new Team();
+        $team = $this->findOneBy(['name' => $teamInfo['name']]) ?: new Team();
 
         // set all the necessary values for team
         $team

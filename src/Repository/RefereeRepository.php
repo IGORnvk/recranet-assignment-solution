@@ -31,9 +31,7 @@ class RefereeRepository extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
 
         // create new object for referee or retrieve existing one
-        $referee = $this->findOneBy(['name' => $refereeInfo['name']]) ?
-            $this->findOneBy(['name' => $refereeInfo['name']]) :
-            new Referee();
+        $referee = $this->findOneBy(['name' => $refereeInfo['name']]) ?: new Referee();
 
         $referee
             ->setName($refereeInfo['name'])

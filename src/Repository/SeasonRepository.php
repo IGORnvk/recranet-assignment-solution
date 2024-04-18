@@ -22,24 +22,22 @@ class SeasonRepository extends ServiceEntityRepository
     }
 
     /**
-     * inserts unique seasons into the database
-     * @param array $years seasons that have to be inserted
+     * inserts unique season into the database
+     * @param string $year year to be inserted
      * @return void
      */
-    public function insertSeasons(array $years): void
+    public function insertSeason(string $year): void
     {
         $entityManager = $this->getEntityManager();
 
-        // loop through array and insert season if it doesn't exist already
-        foreach ($years as $year) {
-            if(!$this->findOneBy(['year' => $year])) {
-                $season = new Season();
+        // insert season if it doesn't exist already
+        if(!$this->findOneBy(['year' => $year])) {
+            $season = new Season();
 
-                $season->setYear($year);
+            $season->setYear($year);
 
-                $entityManager->persist($season);
-                $entityManager->flush();
-            }
+            $entityManager->persist($season);
+            $entityManager->flush();
         }
     }
 

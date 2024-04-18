@@ -28,10 +28,11 @@ class ScoreRepository extends ServiceEntityRepository
      * @param Game $game game object to pair with
      * @return void
      */
-    public function updateScore(array $scoreInfo, Game $game) {
+    public function updateScore(array $scoreInfo, Game $game): void
+    {
         $entityManager = $this->getEntityManager();
 
-        $score = $this->findOneBy(['game' => $game->getId()]) ? $this->findOneBy(['game' => $game->getId()]) : new Score();
+        $score = $this->findOneBy(['game' => $game->getId()]) ?: new Score();
 
         $score
             ->setGame($game)
