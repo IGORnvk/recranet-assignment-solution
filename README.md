@@ -48,7 +48,8 @@ After that, `ddev start` should work perfectly.
 
 ### __400 Bad Request__ 
 When you access the website and try to register/log in, you might encounter a 400 Bad Request error on redirection to home page. The custom configuration of DDEV fixes it in `.ddev/nginx/redirect.conf`, but it might not catch this from the first server start. In order to fix it, simply run `ddev restart` and this config will be executed and 400 error will disappear.
-
+# Database Design
+![erd.jpg](/assets/img/erd.jpg)
 # References
 ## API
 [Football-data](https://www.football-data.org/) was used as an external API to retrieve information about Eredivisie teams and matches.
