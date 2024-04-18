@@ -10,10 +10,16 @@ __After__ all the necessary software was installed and configured, following ins
 3. Execute `ddev start` in the terminal and wait until the server starts
 4. Run `ddev ssh`
 5. Run `composer install` to install all the necessary dependencies for Symfony
-6. Run `npm install` to install Tailwind and other dependencies
-7. Run `npm run watch` to track CSS changes
+6. Run `php bin/console doctrine:migrations:migrate` to execute migrations
+7. Run `npm install` to install Tailwind and other dependencies
+8. Run `npm run watch` to track CSS changes
 
 To stop the server, execute `ddev stop`.
+## Seeding the database
+In order to seed the database, some handy commands were created. If you want to view Eredivisie data from the current season (2023), you can execute: `php bin/console teams-info` and after that `php bin/console matches-info`. Additionally, if you want to have data from previous seasons as well, just add a year after the command, like so: `php bin/console teams-info 2022` - it retrieves teams from season 2022 and updates the database (insert teams that did not participate in season 2023 and adds statistic for all the teams).
+The same feature exists in `matches-info`.
+
+Moreover, after you seeded the desired teams and matches, you can set a cron job that updates data for the current season (2023) every day: `php bin/console messenger:consume -v scheduler_default`.
 ## Possible difficulties
 If you try to install DDEV using WSL2, Ubuntu and Docker Desktop, you might encounter some errors that could be described in this section.
 ### __`root` User__  
