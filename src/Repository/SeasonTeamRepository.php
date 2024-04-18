@@ -17,12 +17,10 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class SeasonTeamRepository extends ServiceEntityRepository
 {
-    private SeasonRepository $seasonRepository;
-
-    public function __construct(ManagerRegistry $registry, SeasonRepository $seasonRepository)
+    public function __construct(
+        ManagerRegistry $registry,
+        private SeasonRepository $seasonRepository)
     {
-        $this->seasonRepository = $seasonRepository;
-
         parent::__construct($registry, SeasonTeam::class);
     }
 

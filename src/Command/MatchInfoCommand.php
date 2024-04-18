@@ -18,21 +18,12 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 )]
 class MatchInfoCommand extends Command
 {
-    private HttpClientInterface $client;
-
-    private RouterInterface $router;
-
-    private GameRepository $gameRepository;
-
-    private string $league;
-
-    public function __construct(HttpClientInterface $client, string $league, RouterInterface $router, GameRepository $gameRepository)
+    public function __construct(
+        private HttpClientInterface $client,
+        private string $league,
+        private RouterInterface $router,
+        private GameRepository $gameRepository)
     {
-        $this->client = $client;
-        $this->router = $router;
-        $this->gameRepository = $gameRepository;
-        $this->league = $league;
-
         parent::__construct();
     }
 

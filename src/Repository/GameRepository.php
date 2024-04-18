@@ -20,21 +20,13 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class GameRepository extends ServiceEntityRepository
 {
-    private TeamRepository $teamRepository;
-
-    private SeasonRepository $seasonRepository;
-
-    private RefereeRepository $refereeRepository;
-
-    private ScoreRepository $scoreRepository;
-
-    public function __construct(ManagerRegistry $registry, TeamRepository $teamRepository, SeasonRepository $seasonRepository, RefereeRepository $refereeRepository, ScoreRepository $scoreRepository)
+    public function __construct(
+        ManagerRegistry $registry,
+        private TeamRepository $teamRepository,
+        private SeasonRepository $seasonRepository,
+        private RefereeRepository $refereeRepository,
+        private ScoreRepository $scoreRepository)
     {
-        $this->teamRepository = $teamRepository;
-        $this->seasonRepository = $seasonRepository;
-        $this->refereeRepository = $refereeRepository;
-        $this->scoreRepository = $scoreRepository;
-
         parent::__construct($registry, Game::class);
     }
 
@@ -58,13 +50,12 @@ class GameRepository extends ServiceEntityRepository
         $guestTeam = $this->teamRepository->findOneBy(['name' => $guestTeamName]);
 
         // retrieve season
+        $this->seasonRepository->insertSeasons([$year]);
         $season = $this->seasonRepository->findOneBy(['year' => $year]);
 
         // create new object for game or retrieve existing one
         $game = $this->findOneBy(['home_team' => $homeTeam->getId(), 'guest_team' => $guestTeam->getId(),
-                'season' => $season->getId()]) ?
-            $this->findOneBy(['home_team' => $homeTeam->getId(), 'guest_team' => $guestTeam->getId(),
-                'season' => $season->getId()]) :
+                'season' => $season->getId()]) ?:
             new Game();
 
         // set all the necessary values

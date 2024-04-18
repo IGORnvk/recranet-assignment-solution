@@ -19,21 +19,12 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 )]
 class TeamInfoCommand extends Command
 {
-    private HttpClientInterface $client;
-
-    private RouterInterface $router;
-
-    private TeamRepository $teamRepository;
-
-    private string $league;
-
-    public function __construct(HttpClientInterface $client, string $league, RouterInterface $router, TeamRepository $teamRepository)
+    public function __construct(
+        private HttpClientInterface $client,
+        private string $league,
+        private RouterInterface $router,
+        private TeamRepository $teamRepository)
     {
-        $this->client = $client;
-        $this->league = $league;
-        $this->router = $router;
-        $this->teamRepository = $teamRepository;
-
         parent::__construct();
     }
 

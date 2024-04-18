@@ -18,15 +18,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class TeamRepository extends ServiceEntityRepository
 {
-    private StatisticRepository $statisticRepository;
-
-    private SeasonTeamRepository $seasonTeamRepository;
-
-    public function __construct(ManagerRegistry $registry, StatisticRepository $statisticRepository, SeasonTeamRepository $seasonTeamRepository)
+    public function __construct(
+        ManagerRegistry $registry,
+        private StatisticRepository $statisticRepository,
+        private SeasonTeamRepository $seasonTeamRepository)
     {
-        $this->statisticRepository = $statisticRepository;
-        $this->seasonTeamRepository = $seasonTeamRepository;
-
         parent::__construct($registry, Team::class);
     }
 
@@ -35,7 +31,7 @@ class TeamRepository extends ServiceEntityRepository
      * @param array $teamInfo information about the team
      * @param int $position team's position in the leaderboard
      * @param array $statistic statistics of the team
-     * @param string $year
+     * @param string $year season to update team's participation in
      * @return void
      */
     public function updateTeam(array $teamInfo, int $position, array $statistic, string $year): void
