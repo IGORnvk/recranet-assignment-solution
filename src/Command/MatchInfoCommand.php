@@ -42,7 +42,15 @@ class MatchInfoCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $year = $input->getArgument('year') ? $input->getArgument('year') : date('Y') - 1;
+        $year = $input->getArgument('year') ?: date('Y') - 1;
+
+        // validate year
+        if (!in_array($year, range(date('Y') - 4, date('Y') - 1))) {
+            $io->error('Specified season is not available. Available seasons: [' .
+                implode(", ", range(date('Y') - 4, date('Y') - 1)). '].');
+
+            return Command::FAILURE;
+        }
 
         if (!$this->seasonRepository->findBy(['year' => $year])) {
             $io->error("Teams for the specified season are not updated. Run 'teams-info' first.");
