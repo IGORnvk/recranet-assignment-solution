@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Repository\GameRepository;
+use App\Repository\SeasonRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -22,7 +23,9 @@ class MatchInfoCommand extends Command
         private HttpClientInterface $client,
         private string $league,
         private RouterInterface $router,
-        private GameRepository $gameRepository)
+        private GameRepository $gameRepository,
+        private SeasonRepository $seasonRepository
+    )
     {
         parent::__construct();
     }
@@ -40,6 +43,12 @@ class MatchInfoCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $year = $input->getArgument('year') ? $input->getArgument('year') : date('Y') - 1;
+
+        if (!$this->seasonRepository->findBy(['year' => $year])) {
+            $io->error("Teams for the specified season are not updated. Run 'teams-info' first.");
+
+            return Command::FAILURE;
+        }
 
         // generate path to a route
         $path = $this->router->generate('football_data_matches', [
