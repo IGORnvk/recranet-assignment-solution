@@ -33,6 +33,11 @@ class LoginController extends AbstractController
     #[Route(path: '/logout', name: 'app_logout')]
     public function logout(Security $security): Response
     {
+        // if not authenticated, redirect to login page
+        if (!$this->isGranted('ROLE_USER')) {
+            return $this->redirectToRoute('app_login');
+        }
+        
         $security->logout(false);
 
         return $this->redirectToRoute('app_login');
