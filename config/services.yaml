@@ -23,6 +23,7 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
+    # command arguments
     App\Command\MatchInfoCommand:
         arguments:
             - '@football_data.client'
@@ -31,4 +32,17 @@ services:
     App\Command\TeamInfoCommand:
         arguments:
             - '@football_data.client'
+            - '%env(FOOTBALL_DATA_LEAGUE)%'
+
+    # cron job arguments
+    App\MessageHandler\TeamInfoMessageHandler:
+        arguments:
+            - '@football_data.client'
+
+    App\MessageHandler\MatchInfoMessageHandler:
+        arguments:
+            - '@football_data.client'
+
+    App\Scheduler\MainSchedule:
+        arguments:
             - '%env(FOOTBALL_DATA_LEAGUE)%'
